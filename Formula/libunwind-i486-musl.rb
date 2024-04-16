@@ -10,18 +10,19 @@ class LibunwindI486Musl < Formula
     strategy :github_latest
   end
 
-  # bottle do
-  #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "05eb9a14d1d773ff1947c19b2b091d14ea937dd4e8fadb640057950e0f9c1733"
-  # end
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "05eb9a14d1d773ff1947c19b2b091d14ea937dd4e8fadb640057950e0f9c1733"
+  end
 
   keg_only "libunwind conflicts with LLVM"
 
+  depends_on "filosottile/musl-cross/musl-cross" => :build
   depends_on "xz"
   depends_on "zlib"
-  depends_on "filosottile/musl-cross/musl-cross" => :build
 
   def install
-    system "./configure", *std_configure_args, "CC=i486-linux-musl-gcc", "--host=i486-unknown-linux-musl", "--target=i486-unknown-linux-musl","--disable-tests","--disable-shared"
+    system "./configure", *std_configure_args, "CC=i486-linux-musl-gcc", "--host=i486-unknown-linux-musl",
+"--target=i486-unknown-linux-musl", "--disable-tests", "--disable-shared"
     system "make"
     system "make", "install"
   end

@@ -10,18 +10,19 @@ class LibunwindRiscv64Musl < Formula
     strategy :github_latest
   end
 
-  # bottle do
-  #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "a05bf1d6c8ca9c306bf22e8532ce56aaef5b26756ada2a013b0b6e3ef2b7e7fa"      
-  # end
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "a05bf1d6c8ca9c306bf22e8532ce56aaef5b26756ada2a013b0b6e3ef2b7e7fa"
+  end
 
   keg_only "libunwind conflicts with LLVM"
 
+  depends_on "filosottile/musl-cross/musl-cross" => :build
   depends_on "xz"
   depends_on "zlib"
-  depends_on "filosottile/musl-cross/musl-cross" => :build
 
   def install
-    system "./configure", *std_configure_args, "CC=riscv64-linux-musl-gcc", "--host=riscv64-unknown-linux-musl", "--target=riscv64-unknown-linux-musl","--disable-tests","--disable-shared"
+    system "./configure", *std_configure_args, "CC=riscv64-linux-musl-gcc", "--host=riscv64-unknown-linux-musl",
+"--target=riscv64-unknown-linux-musl", "--disable-tests", "--disable-shared"
     system "make"
     system "make", "install"
   end

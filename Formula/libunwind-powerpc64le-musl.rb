@@ -10,18 +10,21 @@ class LibunwindPowerpc64leMusl < Formula
     strategy :github_latest
   end
 
-  # bottle do
-  #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "5f497d4367528026f8134417a78031b1e20dd888e0b601694f8520de46aca2ca"
-  # end
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "5f497d4367528026f8134417a78031b1e20dd888e0b601694f8520de46aca2ca"
+  end
 
   keg_only "libunwind conflicts with LLVM"
 
+  depends_on "filosottile/musl-cross/musl-cross" => :build
   depends_on "xz"
   depends_on "zlib"
-  depends_on "filosottile/musl-cross/musl-cross" => :build
 
   def install
-    system "./configure", *std_configure_args,"CFLAGS=-fPIC -g -O2 -m64","CXXFLAGS=-g -O2 -m64","CC=powerpc64le-linux-musl-gcc", "--host=powerpc64le-unknown-linux-musl", "--target=powerpc64le-unknown-linux-musl","--disable-tests","--disable-shared","--disable-ptrace"
+    system "./configure", *std_configure_args, "CFLAGS=-fPIC -g -O2 -m64", "CXXFLAGS=-g -O2 -m64",
+"CC=powerpc64le-linux-musl-gcc", "--host=powerpc64le-unknown-linux-musl",
+"--target=powerpc64le-unknown-linux-musl", "--disable-tests",
+"--disable-shared", "--disable-ptrace"
     system "make"
     system "make", "install"
   end
