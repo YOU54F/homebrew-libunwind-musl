@@ -10,17 +10,18 @@ class LibunwindArmHfMusl < Formula
       strategy :github_latest
     end
   
-    bottle do
-      sha256 cellar: :any_skip_relocation, arm64_sonoma: "9d9ebcbb121f1987151abaf461b4e0b1de04954bbf09f670926f244ff9445ee6"
-    end
+    # bottle do
+    #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "9d9ebcbb121f1987151abaf461b4e0b1de04954bbf09f670926f244ff9445ee6"
+    # end
   
     keg_only "libunwind conflicts with LLVM"
   
     depends_on "xz"
     depends_on "zlib"
+    depends_on "filosottile/musl-cross/musl-cross" => :build
   
     def install
-      system "./configure", *std_configure_args, "CC=/opt/homebrew/bin/arm-linux-musleabihf-gcc", "--host=armv7-unknown-linux-musleabihf", "--target=armv7-unknown-linux-musleabihf","--disable-tests","--disable-shared"
+      system "./configure", *std_configure_args, "CC=arm-linux-musleabihf-gcc", "--host=armv7-unknown-linux-musleabihf", "--target=armv7-unknown-linux-musleabihf","--disable-tests","--disable-shared"
       system "make"
       system "make", "install"
     end

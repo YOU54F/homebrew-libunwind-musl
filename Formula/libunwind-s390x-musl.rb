@@ -10,17 +10,18 @@ class LibunwindS390xMusl < Formula
       strategy :github_latest
     end
   
-    bottle do
-      sha256 cellar: :any_skip_relocation, arm64_sonoma: "453f4e1b2bc9a979d4807cb813ae7ee743561c2ca599a5622d0e7bcbf8b8bc65"
-    end
+    # bottle do
+    #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "453f4e1b2bc9a979d4807cb813ae7ee743561c2ca599a5622d0e7bcbf8b8bc65"
+    # end
   
     keg_only "libunwind conflicts with LLVM"
   
     depends_on "xz"
     depends_on "zlib"
+    depends_on "filosottile/musl-cross/musl-cross" => :build
   
     def install
-      system "./configure", *std_configure_args, "CC=/opt/homebrew/bin/s390x-linux-musl-gcc", "--host=s390x-unknown-linux-musl", "--target=s390x-unknown-linux-musl","--disable-tests","--disable-shared"
+      system "./configure", *std_configure_args, "CC=s390x-linux-musl-gcc", "--host=s390x-unknown-linux-musl", "--target=s390x-unknown-linux-musl","--disable-tests","--disable-shared"
       system "make"
       system "make", "install"
     end

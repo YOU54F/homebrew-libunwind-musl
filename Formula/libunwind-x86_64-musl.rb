@@ -10,17 +10,18 @@ class LibunwindX8664Musl < Formula
       strategy :github_latest
     end
   
-    bottle do
-      sha256 cellar: :any_skip_relocation, arm64_sonoma: "52cc3d917b92a8b7a84bb1ce78e0e22daa85e822a795b54556f5bad9fe82e485"      
-    end
+    # bottle do
+    #   sha256 cellar: :any_skip_relocation, arm64_sonoma: "52cc3d917b92a8b7a84bb1ce78e0e22daa85e822a795b54556f5bad9fe82e485"      
+    # end
   
     keg_only "libunwind conflicts with LLVM"
   
     depends_on "xz"
     depends_on "zlib"
+    depends_on "filosottile/musl-cross/musl-cross" => :build
   
     def install
-      system "./configure", *std_configure_args, "CC=/opt/homebrew/bin/x86_64-linux-musl-gcc", "--host=x86_64-unknown-linux-musl", "--target=x86_64-unknown-linux-musl","--disable-tests","--disable-shared"
+      system "./configure", *std_configure_args, "CC=x86_64-linux-musl-gcc", "--host=x86_64-unknown-linux-musl", "--target=x86_64-unknown-linux-musl","--disable-tests","--disable-shared"
       system "make"
       system "make", "install"
     end

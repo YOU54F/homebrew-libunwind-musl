@@ -10,17 +10,18 @@ class LibunwindMipselMusl < Formula
       strategy :github_latest
     end
   
-    bottle do
-      sha256 cellar: :any_skip_relocation, x86_64_linux: "81f89b76defac2b351bfb10864fcb7a9169b126f6e62a0c37c235873034fea7d"
-    end
+    # bottle do
+    #   sha256 cellar: :any_skip_relocation, x86_64_linux: "81f89b76defac2b351bfb10864fcb7a9169b126f6e62a0c37c235873034fea7d"
+    # end
   
     keg_only "libunwind conflicts with LLVM"
   
     depends_on "xz"
     depends_on "zlib"
+    depends_on "filosottile/musl-cross/musl-cross" => :build
   
     def install
-      system "./configure", *std_configure_args, "CC=/opt/homebrew/bin/mipsel-linux-musl-gcc", "--host=mipsel-unknown-linux-musl", "--target=mipsel-unknown-linux-musl","--disable-tests","--disable-shared"
+      system "./configure", *std_configure_args, "CC=mipsel-linux-musl-gcc", "--host=mipsel-unknown-linux-musl", "--target=mipsel-unknown-linux-musl","--disable-tests","--disable-shared"
       system "make"
       system "make", "install"
     end
